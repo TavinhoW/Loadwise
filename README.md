@@ -1,7 +1,5 @@
 Fazer:
 
-1. Resolver erros que estava a ter (RC Marcelo)
+1. Arrajnar solução para ip automatico
 
 2. Testes (RC Marcelo)
-
-3. Relatorio (PSI Andre Rolo)
