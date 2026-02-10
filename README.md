@@ -1,5 +1,4 @@
 Fazer:
 
-1. Arrajnar solução para ip automatico
-
-2. Testes (RC Marcelo)
+1. Testes (Andre Rolo)
+2. Arranjar solução para ip automatico e docker containers não ligarem com o pc (Marcelo)
