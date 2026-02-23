@@ -4,19 +4,21 @@ services:
   service-a:
     build: ./service-a
     container_name: service_a
+    restart: always
 
   service-b:
     build: ./service-b
     container_name: service_b
+    restart: always
 
   nginx:
     image: nginx
     container_name: load_balancer
+    restart: always
     ports:
-      -  "8080:80"
+      - "8080:80"
     volumes:
-      -  ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
-      -  service-a
-      -  service-b
-
+      - service-a
+      - service-b
