@@ -58,9 +58,9 @@ O dashboard abrir-se-á automaticamente em [http://localhost:3000](http://localh
 
 - [?] **IP Automatico** — Quando o react começa verificar o ip e iniciar as coisas nesse ip automaticamente, sem ter de alterar consuante o novo ip no proprio codigo
 - [?] **Containers Auto-Start** - Os containers iniciam sozinho sem ter de inicia-los manualmente
-- [ ] **Frontend UI Upgrade** - Melhorar o UI do Front-end, e separar em 2 partes, uma parte para simulação dos serviços e a outra parte para controlo e verificação dos serviços
 - [ ] **Padrão MVC/MVP** - Modelos para organizar a aplicação
 - [ ] **Classe para Servidores** - Criar uma classe para poupar linhas de codigo para iniciar os 2 servidores
+- [ ] **Frontend UI Upgrade** - Melhorar o UI do Front-end, e separar em 2 partes, uma parte para simulação dos serviços e a outra parte para controlo e verificação dos serviços
 
 ---
 
