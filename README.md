@@ -1,4 +1,4 @@
-# 🚀 LoadWise - Gestão de Contentores e Load Balancing
+# 🚀 LoadWise
 
 Este projeto foi desenvolvido no âmbito da **Prova de Aptidão Profissional (PAP)** para o curso de Gestão e Programação de Sistemas Informáticos. A aplicação demonstra uma infraestrutura de microserviços utilizando **Docker**, um balanceador de carga **NGINX** e um dashboard em **React** para monitorização de performance e alta disponibilidade.
 
