@@ -64,6 +64,17 @@ O dashboard abrir-se-á automaticamente em [http://localhost:3000](http://localh
 
 ---
 
+## 💼 Metodo de Trabalho
+
+(Qualquer um pode ser em casa)
+(Utilizar Outra Branch no Github)
+
+1. Alterar codigo e afins - (André Rolo)
+2. Experimentar Codigo - (Marcelo)
+3. Relatorio - (André Rolo)
+
+---
+
 ## 🧑‍💻 Autor
 
 Desenvolvido para a **PAP — Prova de Aptidão Profissional**  
