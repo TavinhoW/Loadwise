@@ -1,14 +1,25 @@
-const API_URL = "http://10.5.200.31:8080";
+const currentIP = window.location.hostname;
+const API_URL = `http://${currentIP}:8080`;
 
 export async function fetchBackendStatus() {
   const start = performance.now();
-  const response = await fetch(API_URL);
-  const text = await response.text();
-  const latency = performance.now() - start;
+  try {
+    const response = await fetch(API_URL);
+    const text = await response.text();
+    const latency = performance.now() - start;
 
-  return {
-    message: text,
-    latency: latency.toFixed(2),
-    timestamp: new Date().toLocaleTimeString()
-  };
+    return {
+      message: text,
+      latency: latency.toFixed(2),
+      timestamp: new Date().toLocaleTimeString(),
+      status: "Online"
+    };
+  } catch (error) {
+    return {
+      message: "Erro na ligação",
+      latency: "0.00",
+      timestamp: new Date().toLocaleTimeString(),
+      status: "Offline"
+    };
+  }
 }

@@ -1,7 +1,86 @@
-Fazer:
-(Para Entrega Urgente)
-1. Testes
+# 🚀 LoadWise
 
-(Avançar no trabalho)
-1. Arranjar solução para ip automatico e docker containers não ligarem com o pc
-2. Melhorar o UI do frontend React (Parte para simulação e outra parte para verificação e controlo dos serviços)
+Este projeto foi desenvolvido no âmbito da **Prova de Aptidão Profissional (PAP)** para o curso de Gestão e Programação de Sistemas Informáticos. A aplicação demonstra uma infraestrutura de microserviços utilizando **Docker**, um balanceador de carga **NGINX** e um dashboard em **React** para monitorização de performance e alta disponibilidade.
+
+---
+
+## 🛠️ Configuração e Instalação (Novos Ambientes)
+
+Se estás a configurar este projeto noutro computador, segue estes passos por ordem:
+
+### 1. Preparar o Frontend
+
+Navega até à pasta raiz do projeto e instala as dependências necessárias do Node.js:
+
+```bash
+npm install
+```
+
+### 2. Levantar a Infraestrutura Docker
+
+Certifica-te de que o **Docker Desktop** está a correr. Este comando irá construir as imagens e iniciar os serviços de backend e o Load Balancer:
+
+```bash
+docker-compose up -d --build
+```
+
+```bash
+docker ps
+```
+
+### 3. Iniciar o Dashboard
+
+Após os contentores estarem ativos, inicia o servidor de desenvolvimento do React:
+
+```bash
+npm start
+```
+
+O dashboard abrir-se-á automaticamente em [http://localhost:3000](http://localhost:3000).
+
+---
+
+## ⚙️ Funcionalidades Implementadas
+
+- **Auto-start** — Todos os serviços (Backend A, Backend B e Nginx) estão configurados com políticas de `restart: always`, iniciando automaticamente com o sistema operativo.
+- **IP Dinâmico** — O frontend deteta automaticamente o endereço do servidor através de `window.location.hostname`, eliminando a necessidade de configurações manuais de rede.
+- **Load Balancing** — Distribuição de tráfego inteligente via Nginx (Round-Robin).
+- **Monitorização de Latência** — Cálculo em tempo real do tempo de resposta (RTT) entre cliente e servidor.
+
+---
+
+## 🔍 Comandos Úteis de Diagnóstico
+
+| Ação                        | Comando                            |
+| --------------------------- | ---------------------------------- |
+| Listar serviços ativos      | `docker ps`                        |
+| Ver logs do Load Balancer   | `docker logs load_balancer`        |
+| Parar toda a infraestrutura | `docker-compose down`              |
+| Reiniciar um serviço        | `docker-compose restart <serviço>` |
+| Ver logs em tempo real      | `docker-compose logs -f`           |
+
+---
+
+## 📋 To Do
+
+- [ ] **Padrão MVC/MVP** - Modelos para organizar a aplicação
+- [ ] **Classe para Servidores** - Criar uma classe para poupar linhas de codigo para iniciar os 2 servidores
+- [ ] **Frontend UI Upgrade** - Melhorar o UI do Front-end, e separar em 2 partes, uma parte para simulação dos serviços e a outra parte para controlo e verificação dos serviços
+
+---
+
+## 💼 Metodo de Trabalho
+
+(Qualquer um pode ser em casa)
+(Utilizar Outra Branch no Github)
+
+1. Alterar codigo e afins - (André Rolo)
+2. Experimentar Codigo - (Marcelo)
+3. Relatorio - (André Rolo)
+
+---
+
+## 🧑‍💻 Autor
+
+Desenvolvido para a **PAP — Prova de Aptidão Profissional**  
+Curso: Gestão e Programação de Sistemas Informáticos
