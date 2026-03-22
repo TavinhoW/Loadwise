@@ -11,6 +11,7 @@ Se estás a configurar este projeto noutro computador, segue estes passos por or
 ### 1. Preparar o Frontend
 
 Navega até à pasta raiz do projeto e instala as dependências necessárias do Node.js:
+
 ```bash
 npm install
 ```
@@ -18,13 +19,19 @@ npm install
 ### 2. Levantar a Infraestrutura Docker
 
 Certifica-te de que o **Docker Desktop** está a correr. Este comando irá construir as imagens e iniciar os serviços de backend e o Load Balancer:
+
 ```bash
 docker-compose up -d --build
+```
+
+```bash
+docker ps
 ```
 
 ### 3. Iniciar o Dashboard
 
 Após os contentores estarem ativos, inicia o servidor de desenvolvimento do React:
+
 ```bash
 npm start
 ```
@@ -44,13 +51,13 @@ O dashboard abrir-se-á automaticamente em [http://localhost:3000](http://localh
 
 ## 🔍 Comandos Úteis de Diagnóstico
 
-| Ação | Comando |
-|---|---|
-| Listar serviços ativos | `docker ps` |
-| Ver logs do Load Balancer | `docker logs load_balancer` |
-| Parar toda a infraestrutura | `docker-compose down` |
-| Reiniciar um serviço | `docker-compose restart <serviço>` |
-| Ver logs em tempo real | `docker-compose logs -f` |
+| Ação                        | Comando                            |
+| --------------------------- | ---------------------------------- |
+| Listar serviços ativos      | `docker ps`                        |
+| Ver logs do Load Balancer   | `docker logs load_balancer`        |
+| Parar toda a infraestrutura | `docker-compose down`              |
+| Reiniciar um serviço        | `docker-compose restart <serviço>` |
+| Ver logs em tempo real      | `docker-compose logs -f`           |
 
 ---
 
