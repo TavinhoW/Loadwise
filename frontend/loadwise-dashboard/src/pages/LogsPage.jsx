@@ -166,7 +166,7 @@ export default function LogsPage({ history }) {
           color: '#94a3b8',
           border: '1px solid #1e293b'
         }}>
-          <strong>💡 Legenda de cores (Latência):</strong>
+          <strong>Legenda de cores (Latência):</strong>
           <div style={{ marginTop: '8px', display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <div style={{ width: '12px', height: '12px', background: '#10b981', borderRadius: '3px' }} />

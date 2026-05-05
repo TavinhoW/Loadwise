@@ -38,7 +38,7 @@ export default function LatencyChart({ history }) {
         fontWeight: 'bold',
         color: '#22d3ee'
       }}>
-        📊 Latência das Últimas Requisições
+        Latência das Últimas Requisições
       </h3>
 
       {/* Gráfico de barras com correção de visibilidade */}

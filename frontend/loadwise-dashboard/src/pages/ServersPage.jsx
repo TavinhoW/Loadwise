@@ -78,7 +78,7 @@ export default function ServersPage({ stats, history }) {
             fontWeight: 'bold',
             color: '#3b82f6'
           }}>
-            📋 Detalhes - Service A
+            Detalhes - Service A
           </h3>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -180,7 +180,7 @@ export default function ServersPage({ stats, history }) {
             fontWeight: 'bold',
             color: '#10b981'
           }}>
-            📋 Detalhes - Service B
+            Detalhes - Service B
           </h3>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>

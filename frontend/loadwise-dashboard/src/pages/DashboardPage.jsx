@@ -75,7 +75,7 @@ export default function DashboardPage({ stats, history, currentResponse }) {
           fontWeight: 'bold',
           color: '#22d3ee'
         }}>
-          🔄 Última Resposta do Sistema
+          Última Resposta do Sistema
         </h3>
         
         {currentResponse ? (

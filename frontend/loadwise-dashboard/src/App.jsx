@@ -110,20 +110,6 @@ function App() {
             layout="vertical"
           />
         </nav>
-
-        {/* STATUS DO SISTEMA NO FUNDO DA SIDEBAR */}
-        <div style={{ padding: '20px', borderTop: '1px solid #1e293b' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ 
-              width: '8px', 
-              height: '8px', 
-              backgroundColor: '#10b981', 
-              borderRadius: '50%',
-              boxShadow: '0 0 8px #10b981'
-            }}></div>
-            <span style={{ fontSize: '13px', color: '#94a3b8' }}>Sistema Ativo</span>
-          </div>
-        </div>
       </aside>
 
       {/* CONTEÚDO PRINCIPAL */}

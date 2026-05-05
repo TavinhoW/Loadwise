@@ -56,7 +56,7 @@ export default function MetricsPage({ stats, history }) {
           fontWeight: 'bold',
           color: '#22d3ee'
         }}>
-          📊 Comparação entre Servidores
+          Comparação entre Servidores
         </h3>
 
         <div style={{
@@ -169,7 +169,7 @@ export default function MetricsPage({ stats, history }) {
           fontWeight: 'bold',
           color: '#22d3ee'
         }}>
-          ⚡ Análise de Latência
+          Análise de Latência
         </h3>
 
         <div style={{
