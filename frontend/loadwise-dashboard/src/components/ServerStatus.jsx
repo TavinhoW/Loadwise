@@ -18,7 +18,7 @@ export default function ServerStatus({
       borderRadius: '12px',
       padding: '20px',
       boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-      border: `2px solid ${isActive ? color : '#d1d5db'}`,
+      border: `2px solid}`,
       opacity: isActive ? 1 : 0.6,
       transition: 'all 0.3s ease'
     }}>

@@ -58,7 +58,7 @@ function App() {
     <div style={{ 
       display: 'flex',
       minHeight: '100vh',
-      backgroundColor: '#020617', // Dark Navy quase preto
+      backgroundColor: '#020617', 
       color: '#f8fafc',
       fontFamily: 'Inter, system-ui, sans-serif'
     }}>
@@ -73,18 +73,33 @@ function App() {
         height: '100vh',
         zIndex: 10
       }}>
-        <div style={{ padding: '32px 24px' }}>
+        {/* LOGO SECTION */}
+        <div style={{ 
+          padding: '40px 24px 32px 24px', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', // Centraliza imagem e texto
+          gap: '12px' 
+        }}>
+          <img 
+            src="/loadwise.png" // Caminho relativo à pasta public
+            alt="Loadwise Logo"
+            style={{ 
+              width: '60px', 
+              height: 'auto',
+              filter: 'drop-shadow(0 0 8px rgba(34, 211, 238, 0.4))' // Brilho suave cyan
+            }} 
+            onError={(e) => { e.target.style.display = 'none'; }} // Esconde se a imagem não existir
+          />
           <h1 style={{ 
             color: '#22d3ee', 
             fontSize: '20px', 
             fontWeight: '800', 
-            letterSpacing: '1px',
+            letterSpacing: '2px',
             margin: 0,
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px'
+            textAlign: 'center'
           }}>
-            <span style={{ fontSize: '24px' }}>LOADWISE</span>
+            LOADWISE
           </h1>
         </div>
 
@@ -92,10 +107,11 @@ function App() {
           <Navbar 
             currentPage={currentPage}
             onNavigate={setCurrentPage}
-            layout="vertical" // Prop sugerida para adaptar o seu componente Navbar se necessário
+            layout="vertical"
           />
         </nav>
 
+        {/* STATUS DO SISTEMA NO FUNDO DA SIDEBAR */}
         <div style={{ padding: '20px', borderTop: '1px solid #1e293b' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div style={{ 
@@ -110,13 +126,13 @@ function App() {
         </div>
       </aside>
 
-      {/* CONTEÚDO PRINCIPAL (COM MARGEM PARA A SIDEBAR) */}
+      {/* CONTEÚDO PRINCIPAL */}
       <main style={{ 
         flex: 1, 
         marginLeft: '260px', 
         display: 'flex', 
         flexDirection: 'column',
-        minWidth: 0 // Previne quebra de layout em flexbox
+        minWidth: 0 
       }}>
         {/* TOPBAR HEADER */}
         <header style={{
@@ -133,7 +149,7 @@ function App() {
           zIndex: 9
         }}>
           <div>
-            <h2 style={{ fontSize: '18px', fontWeight: '500', margin: 0, color: '#22d3ee' }}>
+            <h2 style={{ fontSize: '18px', fontWeight: '800', margin: 0, color: '#22d3ee', textTransform: 'uppercase', letterSpacing: '1px' }}>
               {currentPage.charAt(0).toUpperCase() + currentPage.slice(1)}
             </h2>
           </div>
@@ -145,14 +161,12 @@ function App() {
         </div>
       </main>
 
-      {/* CSS Global para animações e resets básicos */}
       <style>{`
         body { margin: 0; padding: 0; }
         @keyframes pulse {
           0%, 100% { opacity: 1; transform: scale(1); }
           50% { opacity: 0.7; transform: scale(0.95); }
         }
-        /* Personalização de scrollbar para modo Dark */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #020617; }
         ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }

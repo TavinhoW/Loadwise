@@ -9,9 +9,9 @@ const Navbar = ({ currentPage, onNavigate, layout = 'vertical' }) => {
   
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: '📊' },
-    { id: 'servers', label: 'Servidores', icon: '🖥️' },
-    { id: 'metrics', label: 'Métricas', icon: '📈' },
-    { id: 'logs', label: 'Logs de Sistema', icon: '📜' },
+    { id: 'servers', label: 'Servers', icon: '🖥️' },
+    { id: 'metrics', label: 'Metrics', icon: '📈' },
+    { id: 'logs', label: 'Logs', icon: '📜' },
   ];
 
   // Estilos base para os botões

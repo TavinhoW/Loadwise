@@ -47,13 +47,6 @@ export default function LogsPage({ history }) {
             {history.length}
           </span>
         </div>
-        <div style={{
-          fontSize: '12px',
-          color: '#94a3b8',
-          fontStyle: 'italic'
-        }}>
-          Mostrando histórico completo (scroll ativo)
-        </div>
       </div>
 
       {/* Tabela de logs com Contentor de Scroll */}
