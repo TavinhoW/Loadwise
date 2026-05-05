@@ -1,6 +1,6 @@
 /**
  * LogsPage.jsx
- * Página de logs e histórico de requisições
+ * Página de logs e histórico de requisições com Scroll Fixo
  */
 
 import React from 'react';
@@ -31,16 +31,17 @@ export default function LogsPage({ history }) {
         marginBottom: '20px',
         display: 'flex',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        border: '1px solid #334155'
       }}>
         <div>
-          <span style={{ fontSize: '14px', color: '#6b7280' }}>
+          <span style={{ fontSize: '14px', color: '#94a3b8' }}>
             Total de registos:
           </span>
           <span style={{ 
             fontSize: '18px', 
             fontWeight: 'bold', 
-            color: '#1f2937',
+            color: '#22d3ee', // Cyan para destaque
             marginLeft: '10px'
           }}>
             {history.length}
@@ -48,19 +49,23 @@ export default function LogsPage({ history }) {
         </div>
         <div style={{
           fontSize: '12px',
-          color: '#9ca3af',
+          color: '#94a3b8',
           fontStyle: 'italic'
         }}>
-          Últimas 20 requisições
+          Mostrando histórico completo (scroll ativo)
         </div>
       </div>
 
-      {/* Tabela de logs */}
+      {/* Tabela de logs com Contentor de Scroll */}
       <div style={{
         background: '#1e293b',
         borderRadius: '12px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-        overflow: 'hidden'
+        boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+        border: '1px solid #334155',
+        overflow: 'hidden', // Garante que as bordas arredondadas cortam o conteúdo
+        maxHeight: '650px', // Altura fixa para não crescer para baixo
+        display: 'flex',
+        flexDirection: 'column'
       }}>
         {history.length === 0 ? (
           <div style={{
@@ -69,64 +74,30 @@ export default function LogsPage({ history }) {
             color: '#9ca3af'
           }}>
             <div style={{ fontSize: '48px', marginBottom: '10px' }}>📭</div>
-            <div style={{ fontSize: '16px' }}>
-              Nenhuma requisição registada ainda
-            </div>
-            <div style={{ fontSize: '14px', marginTop: '5px' }}>
-              Aguardando tráfego no sistema...
-            </div>
+            <div style={{ fontSize: '16px' }}>Nenhuma requisição registada ainda</div>
           </div>
         ) : (
-          <div style={{ overflowX: 'auto' }}>
+          <div style={{ overflowY: 'auto', flex: 1, position: 'relative' }}>
             <table style={{ 
               width: '100%', 
-              borderCollapse: 'collapse'
+              borderCollapse: 'collapse',
+              tableLayout: 'fixed' // Ajuda a manter as colunas alinhadas
             }}>
-              <thead>
+              <thead style={{ 
+                position: 'sticky', 
+                top: 0, 
+                zIndex: 10,
+                backgroundColor: '#1e293b' 
+              }}>
                 <tr style={{ 
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  background: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)',
                   color: 'white'
                 }}>
-                  <th style={{ 
-                    padding: '15px', 
-                    textAlign: 'left',
-                    fontSize: '14px',
-                    fontWeight: '600'
-                  }}>
-                    #
-                  </th>
-                  <th style={{ 
-                    padding: '15px', 
-                    textAlign: 'left',
-                    fontSize: '14px',
-                    fontWeight: '600'
-                  }}>
-                    Servidor
-                  </th>
-                  <th style={{ 
-                    padding: '15px', 
-                    textAlign: 'left',
-                    fontSize: '14px',
-                    fontWeight: '600'
-                  }}>
-                    Latência
-                  </th>
-                  <th style={{ 
-                    padding: '15px', 
-                    textAlign: 'left',
-                    fontSize: '14px',
-                    fontWeight: '600'
-                  }}>
-                    Estado
-                  </th>
-                  <th style={{ 
-                    padding: '15px', 
-                    textAlign: 'left',
-                    fontSize: '14px',
-                    fontWeight: '600'
-                  }}>
-                    Timestamp
-                  </th>
+                  <th style={{ padding: '15px', textAlign: 'left', fontSize: '14px', width: '80px' }}>#</th>
+                  <th style={{ padding: '15px', textAlign: 'left', fontSize: '14px' }}>Servidor</th>
+                  <th style={{ padding: '15px', textAlign: 'left', fontSize: '14px' }}>Latência</th>
+                  <th style={{ padding: '15px', textAlign: 'left', fontSize: '14px' }}>Estado</th>
+                  <th style={{ padding: '15px', textAlign: 'left', fontSize: '14px' }}>Timestamp</th>
                 </tr>
               </thead>
               <tbody>
@@ -134,23 +105,17 @@ export default function LogsPage({ history }) {
                   <tr 
                     key={index}
                     style={{
-                      borderBottom: '1px solid #e5e7eb',
+                      borderBottom: '1px solid #334155',
                       transition: 'background 0.2s ease'
                     }}
-                    onMouseEnter={(e) => e.currentTarget.style.background = '#f9fafb'}
+                    onMouseEnter={(e) => e.currentTarget.style.background = '#0f172a'}
                     onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                   >
-                    <td style={{ 
-                      padding: '15px',
-                      fontSize: '14px',
-                      color: '#6b7280'
-                    }}>
+                    <td style={{ padding: '15px', fontSize: '14px', color: '#94a3b8' }}>
+                      {/* A contagem real continua a subir: 21, 22, 23... */}
                       {history.length - index}
                     </td>
-                    <td style={{ 
-                      padding: '15px',
-                      fontSize: '14px'
-                    }}>
+                    <td style={{ padding: '15px', fontSize: '14px' }}>
                       <span style={{
                         display: 'inline-block',
                         padding: '4px 12px',
@@ -158,42 +123,35 @@ export default function LogsPage({ history }) {
                         fontSize: '13px',
                         fontWeight: '600',
                         background: log.server === 'Service A' 
-                          ? 'rgba(59, 130, 246, 0.1)' 
-                          : 'rgba(16, 185, 129, 0.1)',
-                        color: log.server === 'Service A' ? '#3b82f6' : '#10b981'
+                          ? 'rgba(59, 130, 246, 0.2)' 
+                          : 'rgba(16, 185, 129, 0.2)',
+                        color: log.server === 'Service A' ? '#60a5fa' : '#34d399'
                       }}>
                         {log.server}
                       </span>
                     </td>
                     <td style={{ 
-                      padding: '15px',
-                      fontSize: '14px',
+                      padding: '15px', 
+                      fontSize: '14px', 
                       fontWeight: '600',
-                      color: log.latency < 50 ? '#10b981' : log.latency < 100 ? '#f59e0b' : '#ef4444'
+                      color: log.latency < 50 ? '#34d399' : log.latency < 100 ? '#fbbf24' : '#f87171'
                     }}>
                       {log.latency.toFixed(2)} ms
                     </td>
-                    <td style={{ 
-                      padding: '15px',
-                      fontSize: '14px'
-                    }}>
+                    <td style={{ padding: '15px', fontSize: '14px' }}>
                       <span style={{
                         display: 'inline-flex',
                         alignItems: 'center',
                         gap: '5px',
                         fontSize: '13px',
                         fontWeight: '600',
-                        color: log.status === 'success' ? '#10b981' : '#ef4444'
+                        color: log.status === 'success' ? '#34d399' : '#f87171'
                       }}>
                         {log.status === 'success' ? '✅' : '❌'}
                         {log.status === 'success' ? 'Sucesso' : 'Erro'}
                       </span>
                     </td>
-                    <td style={{ 
-                      padding: '15px',
-                      fontSize: '14px',
-                      color: '#6b7280'
-                    }}>
+                    <td style={{ padding: '15px', fontSize: '14px', color: '#94a3b8' }}>
                       {new Date(log.timestamp).toLocaleTimeString('pt-PT')}
                     </td>
                   </tr>
@@ -209,10 +167,11 @@ export default function LogsPage({ history }) {
         <div style={{
           marginTop: '20px',
           padding: '15px',
-          background: 'rgba(255, 255, 255, 0.9)',
+          background: 'rgba(15, 23, 42, 0.9)',
           borderRadius: '8px',
           fontSize: '12px',
-          color: '#6b7280'
+          color: '#94a3b8',
+          border: '1px solid #1e293b'
         }}>
           <strong>💡 Legenda de cores (Latência):</strong>
           <div style={{ marginTop: '8px', display: 'flex', gap: '20px', flexWrap: 'wrap' }}>

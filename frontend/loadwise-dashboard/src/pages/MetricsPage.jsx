@@ -179,56 +179,56 @@ export default function MetricsPage({ stats, history }) {
         }}>
           <div style={{
             padding: '15px',
-            background: '#f9fafb',
+            background: '#10b981',
             borderRadius: '8px',
-            border: '2px solid #e5e7eb'
+            border: '2px solid #10b981',
           }}>
-            <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '8px' }}>
+            <div style={{ fontSize: '12px', color: 'white', marginBottom: '8px' }}>
               Latência Mínima
             </div>
-            <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#10b981' }}>
+            <div style={{ fontSize: '28px', fontWeight: 'bold', color: 'white' }}>
               {minLatency.toFixed(2)} ms
             </div>
           </div>
 
           <div style={{
             padding: '15px',
-            background: '#f9fafb',
+            background: '#3b82f6',
             borderRadius: '8px',
-            border: '2px solid #e5e7eb'
+            border: '2px solid #3b82f6'
           }}>
-            <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '8px' }}>
+            <div style={{ fontSize: '12px', color: 'white', marginBottom: '8px' }}>
               Latência Média
             </div>
-            <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#3b82f6' }}>
+            <div style={{ fontSize: '28px', fontWeight: 'bold', color: 'white' }}>
               {stats.averageLatency} ms
             </div>
           </div>
 
           <div style={{
             padding: '15px',
-            background: '#f9fafb',
+            background: '#ef4444',
             borderRadius: '8px',
-            border: '2px solid #e5e7eb'
+            border: '2px solid #ef4444'
           }}>
-            <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '8px' }}>
+            <div style={{ fontSize: '12px', color: 'white', marginBottom: '8px' }}>
               Latência Máxima
             </div>
-            <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#ef4444' }}>
+            <div style={{ fontSize: '28px', fontWeight: 'bold', color: 'white' }}>
               {maxLatency.toFixed(2)} ms
             </div>
           </div>
 
           <div style={{
             padding: '15px',
-            background: '#f9fafb',
+            background: '#f59e0b',
             borderRadius: '8px',
-            border: '2px solid #e5e7eb'
+            border: '2px solid #f59e0b'
           }}>
-            <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '8px' }}>
+            <div style={{ fontSize: '12px', color: 'white', marginBottom: '8px' }}>
               Variação (Max - Min)
             </div>
-            <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#f59e0b' }}>
+            <div style={{ fontSize: '28px', fontWeight: 'bold', color: 'white' }}>
               {(maxLatency - minLatency).toFixed(2)} ms
             </div>
           </div>

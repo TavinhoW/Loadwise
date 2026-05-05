@@ -137,17 +137,6 @@ function App() {
               {currentPage.charAt(0).toUpperCase() + currentPage.slice(1)}
             </h2>
           </div>
-          
-          <div style={{ display: 'flex', gap: '24px', fontSize: '13px' }}>
-            <div style={{ textAlign: 'right' }}>
-              <div style={{ color: '#64748b' }}>IP ATIVO</div>
-              <div style={{ fontFamily: 'monospace', color: '#22d3ee' }}>192.168.1.100</div>
-            </div>
-            <div style={{ textAlign: 'right' }}>
-              <div style={{ color: '#64748b' }}>UPTIME</div>
-              <div style={{ color: '#22d3ee' }}>99.98%</div>
-            </div>
-          </div>
         </header>
 
         {/* CONTAINER DAS PÁGINAS */}
