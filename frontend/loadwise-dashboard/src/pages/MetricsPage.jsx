@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import LatencyChart from '../components/LatencyChart';
 
 export default function MetricsPage({ stats, history }) {
@@ -207,6 +208,20 @@ export default function MetricsPage({ stats, history }) {
 
           <div style={{
             padding: '15px',
+            background: '#f59e0b',
+            borderRadius: '8px',
+            border: '2px solid #f59e0b'
+          }}>
+            <div style={{ fontSize: '12px', color: 'white', marginBottom: '8px' }}>
+              Latência P95
+            </div>
+            <div style={{ fontSize: '28px', fontWeight: 'bold', color: 'white' }}>
+              {stats.p95Latency} ms
+            </div>
+          </div>
+
+          <div style={{
+            padding: '15px',
             background: '#ef4444',
             borderRadius: '8px',
             border: '2px solid #ef4444'
@@ -237,3 +252,15 @@ export default function MetricsPage({ stats, history }) {
     </div>
   );
 }
+
+MetricsPage.propTypes = {
+  stats: PropTypes.shape({
+    totalRequests: PropTypes.number.isRequired,
+    serviceACount: PropTypes.number.isRequired,
+    serviceBCount: PropTypes.number.isRequired,
+    averageLatency: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    successRate: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    p95Latency: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  }).isRequired,
+  history: PropTypes.array.isRequired,
+};

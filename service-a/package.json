@@ -1,0 +1,11 @@
+{
+  "name": "service-a",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node server.js",
+    "lint": "eslint server.js"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0"
+  }
+}

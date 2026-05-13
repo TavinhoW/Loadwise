@@ -4,9 +4,18 @@
  */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import ServerStatus from '../components/ServerStatus';
 
 export default function ServersPage({ stats, history }) {
+  const now = Date.now();
+  const OFFLINE_AFTER_MS = 10000; // 10s sem resposta bem-sucedida → OFFLINE
+  const lastServiceASuccess = [...history].reverse().find(h => h.server === 'Service A');
+  const lastServiceBSuccess = [...history].reverse().find(h => h.server === 'Service B');
+  const hasEnoughHistory = history.length >= 5;
+  const isServiceAActive = !hasEnoughHistory || (!!lastServiceASuccess && (now - lastServiceASuccess.timestamp) < OFFLINE_AFTER_MS);
+  const isServiceBActive = !hasEnoughHistory || (!!lastServiceBSuccess && (now - lastServiceBSuccess.timestamp) < OFFLINE_AFTER_MS);
+
   // Calcular latência média por servidor
   const serviceALatency = history
     .filter(h => h.server === 'Service A' && h.status === 'success')
@@ -46,14 +55,14 @@ export default function ServersPage({ stats, history }) {
           serverName="Service A"
           requestCount={stats.serviceACount}
           averageLatency={serviceALatency}
-          isActive={stats.serviceACount > 0 || stats.totalRequests === 0}
+          isActive={isServiceAActive}
           color="#3b82f6"
         />
         <ServerStatus
           serverName="Service B"
           requestCount={stats.serviceBCount}
           averageLatency={serviceBLatency}
-          isActive={stats.serviceBCount > 0 || stats.totalRequests === 0}
+          isActive={isServiceBActive}
           color="#10b981"
         />
       </div>
@@ -156,11 +165,11 @@ export default function ServersPage({ stats, history }) {
               borderStyle: 'solid'
             }}>
               <span style={{ color: 'white', fontSize: '14px' }}>Estado:</span>
-              <span style={{ 
-                fontWeight: 'bold', 
-                color: stats.serviceACount > 0 || stats.totalRequests === 0 ? '#10b981' : '#ef4444'
+              <span style={{
+                fontWeight: 'bold',
+                color: isServiceAActive ? '#10b981' : '#ef4444'
               }}>
-                {stats.serviceACount > 0 || stats.totalRequests === 0 ? '🟢 Online' : '🔴 Offline'}
+                {isServiceAActive ? '🟢 Online' : '🔴 Offline'}
               </span>
             </div>
           </div>
@@ -258,11 +267,11 @@ export default function ServersPage({ stats, history }) {
               borderStyle: 'solid'
             }}>
               <span style={{ color: 'white', fontSize: '14px' }}>Estado:</span>
-              <span style={{ 
-                fontWeight: 'bold', 
-                color: stats.serviceBCount > 0 || stats.totalRequests === 0 ? '#10b981' : '#ef4444'
+              <span style={{
+                fontWeight: 'bold',
+                color: isServiceBActive ? '#10b981' : '#ef4444'
               }}>
-                {stats.serviceBCount > 0 || stats.totalRequests === 0 ? '🟢 Online' : '🔴 Offline'}
+                {isServiceBActive ? '🟢 Online' : '🔴 Offline'}
               </span>
             </div>
           </div>
@@ -271,3 +280,14 @@ export default function ServersPage({ stats, history }) {
     </div>
   );
 }
+
+ServersPage.propTypes = {
+  stats: PropTypes.shape({
+    totalRequests: PropTypes.number.isRequired,
+    serviceACount: PropTypes.number.isRequired,
+    serviceBCount: PropTypes.number.isRequired,
+    averageLatency: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    successRate: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  }).isRequired,
+  history: PropTypes.array.isRequired,
+};

@@ -1,16 +1,12 @@
-/**
- * ServerStatus.jsx
- * Componente para exibir estado individual de cada servidor
- */
-
 import React from 'react';
+import PropTypes from 'prop-types';
 
-export default function ServerStatus({ 
-  serverName, 
-  requestCount, 
-  averageLatency, 
+export default function ServerStatus({
+  serverName,
+  requestCount,
+  averageLatency,
   isActive,
-  color 
+  color
 }) {
   return (
     <div style={{
@@ -18,26 +14,26 @@ export default function ServerStatus({
       borderRadius: '12px',
       padding: '20px',
       boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-      border: `2px solid}`,
+      border: `2px solid ${color}`,
       opacity: isActive ? 1 : 0.6,
       transition: 'all 0.3s ease'
     }}>
       {/* Header */}
-      <div style={{ 
-        display: 'flex', 
-        alignItems: 'center', 
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
         justifyContent: 'space-between',
         marginBottom: '15px'
       }}>
-        <h3 style={{ 
-          margin: 0, 
+        <h3 style={{
+          margin: 0,
           fontSize: '18px',
           fontWeight: 'bold',
           color: 'white'
         }}>
           {serverName}
         </h3>
-        
+
         {/* Status indicator */}
         <div style={{
           display: 'flex',
@@ -51,7 +47,7 @@ export default function ServerStatus({
             backgroundColor: isActive ? '#10b981' : '#ef4444',
             animation: isActive ? 'pulse 2s infinite' : 'none'
           }} />
-          <span style={{ 
+          <span style={{
             fontSize: '12px',
             fontWeight: '600',
             color: isActive ? '#10b981' : '#ef4444'
@@ -62,21 +58,21 @@ export default function ServerStatus({
       </div>
 
       {/* Estatísticas */}
-      <div style={{ 
-        display: 'grid', 
+      <div style={{
+        display: 'grid',
         gridTemplateColumns: '1fr 1fr',
         gap: '15px'
       }}>
         <div>
-          <div style={{ 
-            fontSize: '12px', 
+          <div style={{
+            fontSize: '12px',
             color: '#6b7280',
             marginBottom: '5px'
           }}>
             Requisições
           </div>
-          <div style={{ 
-            fontSize: '24px', 
+          <div style={{
+            fontSize: '24px',
             fontWeight: 'bold',
             color: color
           }}>
@@ -85,15 +81,15 @@ export default function ServerStatus({
         </div>
 
         <div>
-          <div style={{ 
-            fontSize: '12px', 
+          <div style={{
+            fontSize: '12px',
             color: '#6b7280',
             marginBottom: '5px'
           }}>
             Latência Média
           </div>
-          <div style={{ 
-            fontSize: '24px', 
+          <div style={{
+            fontSize: '24px',
             fontWeight: 'bold',
             color: color
           }}>
@@ -121,3 +117,11 @@ export default function ServerStatus({
     </div>
   );
 }
+
+ServerStatus.propTypes = {
+  serverName: PropTypes.string.isRequired,
+  requestCount: PropTypes.number.isRequired,
+  averageLatency: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  isActive: PropTypes.bool.isRequired,
+  color: PropTypes.string.isRequired,
+};

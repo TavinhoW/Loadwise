@@ -1,86 +1,201 @@
-# 🚀 LoadWise
+# Loadwise
 
-Este projeto foi desenvolvido no âmbito da **Prova de Aptidão Profissional (PAP)** para o curso de Gestão e Programação de Sistemas Informáticos. A aplicação demonstra uma infraestrutura de microserviços utilizando **Docker**, um balanceador de carga **NGINX** e um dashboard em **React** para monitorização de performance e alta disponibilidade.
+Sistema de monitorização de balanceamento de carga desenvolvido como projeto PAP. Demonstra containerização com Docker, balanceamento de carga round-robin e observabilidade em tempo real através de um dashboard React.
 
 ---
 
-## 🛠️ Configuração e Instalação (Novos Ambientes)
+## Arquitetura
 
-Se estás a configurar este projeto noutro computador, segue estes passos por ordem:
-
-### 1. Preparar o Frontend
-
-Navega até à pasta raiz do projeto e instala as dependências necessárias do Node.js:
-
-```bash
-npm install
+```
+[Browser]
+    |
+    | :3000  (npm start)
+    v
+[Frontend React]
+    |
+    | :8080  (node balancer.js)
+    v
+[Balanceador Round-Robin]
+   /            \
+  / :3001        \ :3002
+ v                v
+[Service A]    [Service B]
+ [Docker]       [Docker]
 ```
 
-### 2. Levantar a Infraestrutura Docker
+Os dois serviços correm em containers Docker isolados.
+O balanceador e o frontend correm localmente com Node.js.
 
-Certifica-te de que o **Docker Desktop** está a correr. Este comando irá construir as imagens e iniciar os serviços de backend e o Load Balancer:
+---
+
+## Pré-requisitos
+
+- [Node.js 18+](https://nodejs.org/)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+
+---
+
+## Arranque
+
+### 1. Iniciar os servidores (Docker)
 
 ```bash
-docker-compose up -d --build
+docker compose up -d
 ```
+
+Confirmar que estão a correr:
 
 ```bash
 docker ps
 ```
 
-### 3. Iniciar o Dashboard
+Deverás ver `service_a` (porta 3001) e `service_b` (porta 3002) com estado `healthy`.
 
-Após os contentores estarem ativos, inicia o servidor de desenvolvimento do React:
+### 2. Iniciar o balanceador de carga
 
 ```bash
+node balancer.js
+```
+
+Deixa este terminal aberto. O balanceador fica a correr na porta **8080** e distribui os pedidos em round-robin entre os dois serviços.
+
+### 3. Iniciar o dashboard (novo terminal)
+
+```bash
+cd frontend/loadwise-dashboard
+npm install        # apenas na primeira vez
 npm start
 ```
 
-O dashboard abrir-se-á automaticamente em [http://localhost:3000](http://localhost:3000).
+O browser abre automaticamente em **http://localhost:3000**.
 
 ---
 
-## ⚙️ Funcionalidades Implementadas
+## Testar o balanceamento
 
-- **Auto-start** — Todos os serviços (Backend A, Backend B e Nginx) estão configurados com políticas de `restart: always`, iniciando automaticamente com o sistema operativo.
-- **IP Dinâmico** — O frontend deteta automaticamente o endereço do servidor através de `window.location.hostname`, eliminando a necessidade de configurações manuais de rede.
-- **Load Balancing** — Distribuição de tráfego inteligente via Nginx (Round-Robin).
-- **Monitorização de Latência** — Cálculo em tempo real do tempo de resposta (RTT) entre cliente e servidor.
-
----
-
-## 🔍 Comandos Úteis de Diagnóstico
-
-| Ação                        | Comando                            |
-| --------------------------- | ---------------------------------- |
-| Listar serviços ativos      | `docker ps`                        |
-| Ver logs do Load Balancer   | `docker logs load_balancer`        |
-| Parar toda a infraestrutura | `docker-compose down`              |
-| Reiniciar um serviço        | `docker-compose restart <serviço>` |
-| Ver logs em tempo real      | `docker-compose logs -f`           |
+```bash
+# Cada pedido alterna entre Service A e Service B
+curl http://localhost:8080/
+curl http://localhost:8080/slow
+```
 
 ---
 
-## 📋 To Do
+## Simular falha de servidor
 
-- [ ] **Padrão MVC/MVP** - Modelos para organizar a aplicação
-- [ ] **Classe para Servidores** - Criar uma classe para poupar linhas de codigo para iniciar os 2 servidores
-- [ ] **Frontend UI Upgrade** - Melhorar o UI do Front-end, e separar em 2 partes, uma parte para simulação dos serviços e a outra parte para controlo e verificação dos serviços
+```bash
+# Parar o Service B
+docker stop service_b
 
----
+# Após ~10 segundos o dashboard mostra Service B como OFFLINE
+# O balanceador redireciona todo o tráfego para Service A automaticamente
 
-## 💼 Metodo de Trabalho
-
-(Qualquer um pode ser em casa)
-(Utilizar Outra Branch no Github)
-
-1. Alterar codigo e afins - (André Rolo)
-2. Experimentar Codigo - (Marcelo)
-3. Relatorio - (André Rolo)
+# Retomar o Service B
+docker start service_b
+```
 
 ---
 
-## 🧑‍💻 Autor
+## Parar tudo
 
-Desenvolvido para a **PAP — Prova de Aptidão Profissional**  
+```bash
+# Parar os containers
+docker compose down
+
+# Parar o balanceador → Ctrl+C no terminal do balancer.js
+# Parar o frontend   → Ctrl+C no terminal do npm start
+```
+
+---
+
+## Testes
+
+```bash
+cd frontend/loadwise-dashboard
+npm test
+```
+
+27 testes a cobrir: lógica da API (`computeStats`, `fetchBackendStatus`), componentes (`MetricsCard`, `ServerStatus`) e navegação do dashboard (`App`).
+
+---
+
+## Endpoints dos serviços
+
+| Endpoint      | Descrição                                               |
+|---------------|---------------------------------------------------------|
+| `GET /`       | Resposta padrão com nome do serviço                     |
+| `GET /slow`   | Resposta com delay de 500ms (simula latência elevada)   |
+| `GET /cpu`    | Cálculo de primos — Crivo de Eratóstenes (simula CPU)   |
+| `GET /health` | Healthcheck usado pelo Docker                           |
+
+---
+
+## Stack Tecnológica
+
+| Camada        | Tecnologia                 |
+|---------------|----------------------------|
+| Frontend      | React 19                   |
+| Balanceador   | Node.js (http nativo)      |
+| Backend       | Node.js (http nativo)      |
+| Containers    | Docker + Docker Compose    |
+| Testes        | Jest + Testing Library     |
+
+---
+
+## Estrutura do Projeto
+
+```
+Loadwise/
+├── docker-compose.yml          # Orquestra service-a e service-b
+├── balancer.js                 # Balanceador round-robin local
+├── service-a/
+│   ├── Dockerfile
+│   ├── .env.example            # Variáveis de ambiente do serviço
+│   └── server.js               # Backend Node.js — Service A
+├── service-b/
+│   ├── Dockerfile
+│   ├── .env.example            # Variáveis de ambiente do serviço
+│   └── server.js               # Backend Node.js — Service B
+└── frontend/loadwise-dashboard/
+    └── src/
+        ├── api.js              # fetchBackendStatus + computeStats
+        ├── App.jsx             # Estado global + routing + polling
+        ├── components/
+        │   ├── Navbar.jsx
+        │   ├── MetricsCard.jsx
+        │   ├── ServerStatus.jsx
+        │   └── LatencyChart.jsx
+        └── pages/
+            ├── DashboardPage.jsx
+            ├── MetricsPage.jsx
+            ├── ServersPage.jsx
+            └── LogsPage.jsx
+```
+
+---
+
+## Variáveis de Ambiente
+
+Cada serviço suporta as seguintes variáveis (definidas no `docker-compose.yml`):
+
+| Variável       | Padrão      | Descrição                        |
+|----------------|-------------|----------------------------------|
+| `SERVICE_NAME` | `Service A` | Nome devolvido nas respostas JSON |
+| `PORT`         | `3000`      | Porta em que o serviço escuta    |
+
+Ver `.env.example` em cada pasta de serviço.
+
+---
+
+## Conceitos Demonstrados
+
+- **Containerização** — Service A e Service B isolados em containers Docker com healthchecks
+- **Balanceamento de carga** — distribuição round-robin com failover automático
+- **Alta disponibilidade** — deteção de servidores offline e redirecionamento de tráfego
+- **Observabilidade** — latência, P95, débito, taxa de sucesso em tempo real
+- **Stress testing** — teste de carga com burst de pedidos simultâneos
+
+---
+
+Desenvolvido para a **PAP — Prova de Aptidão Profissional**
 Curso: Gestão e Programação de Sistemas Informáticos

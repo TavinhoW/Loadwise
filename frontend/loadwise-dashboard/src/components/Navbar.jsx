@@ -1,20 +1,14 @@
-/**
- * Navbar.jsx
- * Componente de navegação adaptável para layout vertical/sidebar
- */
-
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const Navbar = ({ currentPage, onNavigate, layout = 'vertical' }) => {
-  
-  const navItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: '📊' },
-    { id: 'servers', label: 'Servers', icon: '🖥️' },
-    { id: 'metrics', label: 'Metrics', icon: '📈' },
-    { id: 'logs', label: 'Logs', icon: '📜' },
-  ];
+const navItems = [
+  { id: 'dashboard', label: 'Dashboard', icon: '📊' },
+  { id: 'servers', label: 'Servers', icon: '🖥️' },
+  { id: 'metrics', label: 'Metrics', icon: '📈' },
+  { id: 'logs', label: 'Logs', icon: '📜' },
+];
 
-  // Estilos base para os botões
+const Navbar = ({ currentPage, onNavigate }) => {
   const getBtnStyle = (isActive) => ({
     width: '100%',
     display: 'flex',
@@ -33,15 +27,15 @@ const Navbar = ({ currentPage, onNavigate, layout = 'vertical' }) => {
   });
 
   return (
-    <div style={{ 
-      display: 'flex', 
-      flexDirection: 'column', 
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
       width: '100%',
-      marginTop: '20px' 
+      marginTop: '20px'
     }}>
       {navItems.map((item) => {
         const isActive = currentPage === item.id;
-        
+
         return (
           <button
             key={item.id}
@@ -60,10 +54,10 @@ const Navbar = ({ currentPage, onNavigate, layout = 'vertical' }) => {
               }
             }}
           >
-            <span style={{ 
-              marginRight: '12px', 
+            <span style={{
+              marginRight: '12px',
               fontSize: '18px',
-              filter: isActive ? 'none' : 'grayscale(100%) opacity(0.7)' 
+              filter: isActive ? 'none' : 'grayscale(100%) opacity(0.7)'
             }}>
               {item.icon}
             </span>
@@ -73,6 +67,12 @@ const Navbar = ({ currentPage, onNavigate, layout = 'vertical' }) => {
       })}
     </div>
   );
+};
+
+Navbar.propTypes = {
+  currentPage: PropTypes.string.isRequired,
+  onNavigate: PropTypes.func.isRequired,
+  layout: PropTypes.oneOf(['vertical', 'horizontal']),
 };
 
 export default Navbar;
