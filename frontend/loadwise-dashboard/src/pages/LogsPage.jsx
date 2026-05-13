@@ -4,10 +4,35 @@
  */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default function LogsPage({ history }) {
-  // Inverter histórico para mostrar os mais recentes primeiro
   const reversedHistory = [...history].reverse();
+
+  const exportCSV = () => {
+    const headers = ['#', 'Servidor', 'Latência (ms)', 'Latência Servidor (ms)', 'Estado', 'Endpoint', 'Timestamp'];
+    const rows = history.map((log, i) => [
+      i + 1,
+      log.server,
+      log.latency.toFixed(2),
+      (log.serverLatency || 0).toFixed(2),
+      log.status === 'success' ? 'Sucesso' : 'Erro',
+      log.endpoint || '/',
+      new Date(log.timestamp).toLocaleString('pt-PT'),
+    ]);
+
+    const csv = [headers, ...rows]
+      .map(row => row.map(cell => `"${cell}"`).join(','))
+      .join('\n');
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `loadwise-logs-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <div>
@@ -34,19 +59,45 @@ export default function LogsPage({ history }) {
         alignItems: 'center',
         border: '1px solid #334155'
       }}>
-        <div>
-          <span style={{ fontSize: '14px', color: '#94a3b8' }}>
-            Total de registos:
-          </span>
-          <span style={{ 
-            fontSize: '18px', 
-            fontWeight: 'bold', 
-            color: '#22d3ee', // Cyan para destaque
-            marginLeft: '10px'
-          }}>
-            {history.length}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+          <div>
+            <span style={{ fontSize: '14px', color: '#94a3b8' }}>
+              Total de registos:
+            </span>
+            <span style={{
+              fontSize: '18px',
+              fontWeight: 'bold',
+              color: '#22d3ee',
+              marginLeft: '10px'
+            }}>
+              {history.length}
+            </span>
+          </div>
+          <span style={{ fontSize: '11px', color: '#64748b' }}>
+            (máx. 200 — os mais antigos são removidos automaticamente)
           </span>
         </div>
+
+        {history.length > 0 && (
+          <button
+            onClick={exportCSV}
+            style={{
+              padding: '8px 16px',
+              borderRadius: '8px',
+              border: '1px solid #22d3ee',
+              cursor: 'pointer',
+              fontSize: '13px',
+              fontWeight: '600',
+              backgroundColor: 'transparent',
+              color: '#22d3ee',
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#22d3ee'; e.currentTarget.style.color = '#020617'; }}
+            onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#22d3ee'; }}
+          >
+            Exportar CSV ↓
+          </button>
+        )}
       </div>
 
       {/* Tabela de logs com Contentor de Scroll */}
@@ -186,3 +237,7 @@ export default function LogsPage({ history }) {
     </div>
   );
 }
+
+LogsPage.propTypes = {
+  history: PropTypes.array.isRequired,
+};

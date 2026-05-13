@@ -1,24 +1,38 @@
-version: "3"
-
 services:
   service-a:
     build: ./service-a
     container_name: service_a
     restart: always
+    ports:
+      - "3001:3000"
+    environment:
+      - SERVICE_NAME=Service A
+    networks:
+      - loadwise
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health',(r)=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
 
   service-b:
     build: ./service-b
     container_name: service_b
     restart: always
-
-  nginx:
-    image: nginx
-    container_name: load_balancer
-    restart: always
     ports:
-      - "8080:80"
-    volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-    depends_on:
-      - service-a
-      - service-b
+      - "3002:3000"
+    environment:
+      - SERVICE_NAME=Service B
+    networks:
+      - loadwise
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health',(r)=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  loadwise:
+    name: loadwise

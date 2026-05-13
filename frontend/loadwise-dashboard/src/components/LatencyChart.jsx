@@ -1,8 +1,5 @@
-/**
- * LatencyChart.jsx - Versão Corrigida (Pixel-Perfect)
- */
-
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default function LatencyChart({ history }) {
   if (!history || history.length === 0) {
@@ -20,8 +17,9 @@ export default function LatencyChart({ history }) {
     );
   }
 
-  // Calcular valores para o gráfico
-  const maxLatency = Math.max(...history.map(h => h.latency), 100);
+  // Mostrar apenas as últimas 60 entradas para evitar overflow do gráfico
+  const visible = history.slice(-60);
+  const maxLatency = Math.max(...visible.map(h => h.latency), 100);
   const chartHeight = 200;
 
   return (
@@ -32,45 +30,44 @@ export default function LatencyChart({ history }) {
       boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
       border: '1px solid #334155'
     }}>
-      <h3 style={{ 
+      <h3 style={{
         margin: '0 0 20px 0',
         fontSize: '16px',
         fontWeight: 'bold',
         color: '#22d3ee'
       }}>
         Latência das Últimas Requisições
+        <span style={{ fontSize: '12px', fontWeight: 'normal', color: '#64748b', marginLeft: '8px' }}>
+          (últimas {visible.length})
+        </span>
       </h3>
 
-      {/* Gráfico de barras com correção de visibilidade */}
       <div style={{
         display: 'flex',
         alignItems: 'flex-end',
-        gap: '4px',
+        gap: '2px',
         height: `${chartHeight}px`,
-        borderBottom: '2px solid #334155', // Linha de base mais escura
-        paddingBottom: '2px' // Ajuste para a barra tocar na linha
+        borderBottom: '2px solid #334155',
+        paddingBottom: '2px',
+        overflow: 'hidden'
       }}>
-        {history.map((item, index) => {
-          // CORREÇÃO: Força um mínimo de 3% para a barra nunca desaparecer ou "bugar"
+        {visible.map((item, index) => {
           const calculatedHeight = (item.latency / maxLatency) * 100;
-          const heightPercent = Math.max(calculatedHeight, 3); 
-          
+          const heightPercent = Math.max(calculatedHeight, 3);
           const color = item.server === 'Service A' ? '#3b82f6' : '#10b981';
-          
+
           return (
             <div
               key={index}
               style={{
-                flex: 1,
+                flex: '1 1 0',
                 height: `${heightPercent}%`,
                 backgroundColor: color,
-                // CORREÇÃO: Se a barra for muito pequena, remove o border-radius para não bugar os pixeis
-                borderRadius: heightPercent > 5 ? '4px 4px 0 0' : '0',
-                minWidth: '4px',
-                position: 'relative',
+                borderRadius: heightPercent > 5 ? '3px 3px 0 0' : '0',
+                minWidth: 0,
                 transition: 'height 0.3s ease',
                 opacity: item.status === 'error' ? 0.3 : 1,
-                boxShadow: `0 0 10px ${color}33` // Brilho subtil
+                boxShadow: `0 0 6px ${color}33`
               }}
               title={`${item.server}: ${item.latency.toFixed(2)}ms`}
             />
@@ -78,7 +75,6 @@ export default function LatencyChart({ history }) {
         })}
       </div>
 
-      {/* Legenda */}
       <div style={{
         display: 'flex',
         justifyContent: 'center',
@@ -108,3 +104,12 @@ export default function LatencyChart({ history }) {
     </div>
   );
 }
+
+LatencyChart.propTypes = {
+  history: PropTypes.arrayOf(PropTypes.shape({
+    server: PropTypes.string.isRequired,
+    latency: PropTypes.number.isRequired,
+    status: PropTypes.string.isRequired,
+    timestamp: PropTypes.number.isRequired,
+  })).isRequired,
+};

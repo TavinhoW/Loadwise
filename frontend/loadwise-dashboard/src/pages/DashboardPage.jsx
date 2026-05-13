@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import MetricsCard from '../components/MetricsCard';
 import LatencyChart from '../components/LatencyChart';
 
@@ -51,13 +52,20 @@ export default function DashboardPage({ stats, history, currentResponse }) {
         />
         <MetricsCard
           title="Balanceamento"
-          value={stats.totalRequests > 0 
-            ? `${((stats.serviceACount / stats.totalRequests) * 100).toFixed(0)}% / ${((stats.serviceBCount / stats.totalRequests) * 100).toFixed(0)}%`
+          value={stats.serviceACount + stats.serviceBCount > 0
+            ? `${((stats.serviceACount / (stats.serviceACount + stats.serviceBCount)) * 100).toFixed(0)}% / ${((stats.serviceBCount / (stats.serviceACount + stats.serviceBCount)) * 100).toFixed(0)}%`
             : '0% / 0%'
           }
           unit="Service A / Service B"
           color="#f59e0b"
           icon="⚖️"
+        />
+        <MetricsCard
+          title="Débito"
+          value={stats.throughput}
+          unit="requisições / segundo"
+          color="#22d3ee"
+          icon="🚀"
         />
       </div>
 
@@ -130,7 +138,7 @@ export default function DashboardPage({ stats, history, currentResponse }) {
             color: '#9ca3af',
             padding: '20px'
           }}>
-            ⏳ Aguardando primeira resposta do sistema...
+            ⏳ A aguardar a primeira resposta do sistema...
           </div>
         )}
       </div>
@@ -140,3 +148,25 @@ export default function DashboardPage({ stats, history, currentResponse }) {
     </div>
   );
 }
+
+const statsShape = PropTypes.shape({
+  totalRequests: PropTypes.number.isRequired,
+  averageLatency: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  serviceACount: PropTypes.number.isRequired,
+  serviceBCount: PropTypes.number.isRequired,
+  successRate: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  throughput: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  p95Latency: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+});
+
+DashboardPage.propTypes = {
+  stats: statsShape.isRequired,
+  history: PropTypes.array.isRequired,
+  currentResponse: PropTypes.shape({
+    serverName: PropTypes.string,
+    message: PropTypes.string,
+    latency: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    timestamp: PropTypes.string,
+    status: PropTypes.string,
+  }),
+};

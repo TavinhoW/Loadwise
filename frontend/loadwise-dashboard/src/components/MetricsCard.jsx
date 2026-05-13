@@ -1,9 +1,5 @@
-/**
- * MetricsCard.jsx
- * Componente para exibir métricas individuais
- */
-
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default function MetricsCard({ title, value, unit, color = '#3b82f6', icon }) {
   return (
@@ -15,14 +11,14 @@ export default function MetricsCard({ title, value, unit, color = '#3b82f6', ico
       border: `2px solid ${color}`,
       minWidth: '180px'
     }}>
-      <div style={{ 
-        display: 'flex', 
-        alignItems: 'center', 
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
         justifyContent: 'space-between',
         marginBottom: '10px'
       }}>
-        <span style={{ 
-          fontSize: '14px', 
+        <span style={{
+          fontSize: '14px',
           color: '#6b7280',
           fontWeight: '500'
         }}>
@@ -30,19 +26,19 @@ export default function MetricsCard({ title, value, unit, color = '#3b82f6', ico
         </span>
         {icon && <span style={{ fontSize: '24px' }}>{icon}</span>}
       </div>
-      
-      <div style={{ 
-        fontSize: '32px', 
+
+      <div style={{
+        fontSize: '32px',
         fontWeight: 'bold',
         color: color,
         marginBottom: '5px'
       }}>
         {value}
       </div>
-      
+
       {unit && (
-        <div style={{ 
-          fontSize: '12px', 
+        <div style={{
+          fontSize: '12px',
           color: '#9ca3af'
         }}>
           {unit}
@@ -51,3 +47,11 @@ export default function MetricsCard({ title, value, unit, color = '#3b82f6', ico
     </div>
   );
 }
+
+MetricsCard.propTypes = {
+  title: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  unit: PropTypes.string,
+  color: PropTypes.string,
+  icon: PropTypes.string,
+};
