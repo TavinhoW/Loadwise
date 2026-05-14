@@ -17,8 +17,9 @@ export default function LatencyChart({ history }) {
     );
   }
 
-  // Mostrar apenas as últimas 60 entradas para evitar overflow do gráfico
+  // Limita a janela visível a 60 entradas para manter o gráfico legível
   const visible = history.slice(-60);
+  // Escala dinâmica: o valor máximo define a altura total das barras (mínimo 100ms)
   const maxLatency = Math.max(...visible.map(h => h.latency), 100);
   const chartHeight = 200;
 

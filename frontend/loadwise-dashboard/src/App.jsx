@@ -6,7 +6,10 @@ import ServersPage from './pages/ServersPage';
 import MetricsPage from './pages/MetricsPage';
 import LogsPage from './pages/LogsPage';
 
+// Número máximo de entradas no histórico — as mais antigas são descartadas automaticamente
 const MAX_HISTORY = 200;
+
+// Intervalo de polling ao balanceador (em ms) — atualiza o dashboard a cada 2 segundos
 const POLL_INTERVAL_MS = 2000;
 
 const ENDPOINTS = [
@@ -26,6 +29,7 @@ function App() {
   const rawStats = computeStats(requestHistory, totalRequests);
   const stats = { ...rawStats, serviceACount: serviceATotal, serviceBCount: serviceBTotal };
 
+  // Regista o resultado de cada pedido no histórico e atualiza os contadores por servidor
   const addResult = (result) => {
     if (!result) return;
     setCurrentResponse(result);
@@ -42,6 +46,7 @@ function App() {
         endpoint: result.endpoint,
       };
       const updated = [...prev, entry];
+      // Mantém apenas as MAX_HISTORY entradas mais recentes
       return updated.length > MAX_HISTORY ? updated.slice(-MAX_HISTORY) : updated;
     });
   };
@@ -51,6 +56,8 @@ function App() {
     addResult(result);
   };
 
+  // Teste de carga: envia 10 pedidos com 100ms de intervalo entre cada um
+  // O escalonamento evita sobrecarregar o browser (máx. 6 ligações simultâneas por host)
   const runBurstTest = () => {
     for (let i = 0; i < 10; i++) {
       setTimeout(() => {
@@ -59,6 +66,8 @@ function App() {
     }
   };
 
+  // Inicia o polling automático ao montar o componente e reinicia quando o endpoint muda
+  // O cleanup garante que não ficam intervalos ativos após desmontagem
   useEffect(() => {
     fetchData();
     const interval = setInterval(() => fetchData(selectedEndpoint), POLL_INTERVAL_MS);
