@@ -189,7 +189,7 @@ function App() {
               onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#f59e0b'; e.currentTarget.style.color = '#020617'; }}
               onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#f59e0b'; }}
             >
-              Teste de Carga ⚡
+              Teste de Carga
             </button>
           </div>
         </header>
@@ -206,7 +206,6 @@ function App() {
             fontWeight: '600',
             color: '#fca5a5',
           }}>
-            <span style={{ fontSize: '18px' }}>⚠️</span>
             <span>
               ALERTA: Taxa de sucesso abaixo de 95% ({stats.successRate}%) — Possível falha num serviço
             </span>

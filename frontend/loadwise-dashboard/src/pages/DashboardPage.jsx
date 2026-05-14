@@ -34,21 +34,18 @@ export default function DashboardPage({ stats, history, currentResponse }) {
           value={stats.totalRequests}
           unit="requisições processadas"
           color="#8b5cf6"
-          icon="📊"
         />
         <MetricsCard
           title="Latência Média"
           value={stats.averageLatency}
           unit="milissegundos"
           color="#3b82f6"
-          icon="⚡"
         />
         <MetricsCard
           title="Taxa de Sucesso"
           value={stats.successRate}
           unit="percentagem"
           color="#10b981"
-          icon="✅"
         />
         <MetricsCard
           title="Balanceamento"
@@ -58,14 +55,12 @@ export default function DashboardPage({ stats, history, currentResponse }) {
           }
           unit="Service A / Service B"
           color="#f59e0b"
-          icon="⚖️"
         />
         <MetricsCard
           title="Débito"
           value={stats.throughput}
           unit="requisições / segundo"
           color="#22d3ee"
-          icon="🚀"
         />
       </div>
 
@@ -138,7 +133,7 @@ export default function DashboardPage({ stats, history, currentResponse }) {
             color: '#9ca3af',
             padding: '20px'
           }}>
-            ⏳ A aguardar a primeira resposta do sistema...
+            A aguardar a primeira resposta do sistema...
           </div>
         )}
       </div>

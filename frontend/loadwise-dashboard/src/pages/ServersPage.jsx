@@ -169,7 +169,7 @@ export default function ServersPage({ stats, history }) {
                 fontWeight: 'bold',
                 color: isServiceAActive ? '#10b981' : '#ef4444'
               }}>
-                {isServiceAActive ? '🟢 Online' : '🔴 Offline'}
+                {isServiceAActive ? 'Online' : 'Offline'}
               </span>
             </div>
           </div>
@@ -271,7 +271,7 @@ export default function ServersPage({ stats, history }) {
                 fontWeight: 'bold',
                 color: isServiceBActive ? '#10b981' : '#ef4444'
               }}>
-                {isServiceBActive ? '🟢 Online' : '🔴 Offline'}
+                {isServiceBActive ? 'Online' : 'Offline'}
               </span>
             </div>
           </div>

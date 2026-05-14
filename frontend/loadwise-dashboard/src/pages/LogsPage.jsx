@@ -117,7 +117,6 @@ export default function LogsPage({ history }) {
             textAlign: 'center',
             color: '#9ca3af'
           }}>
-            <div style={{ fontSize: '48px', marginBottom: '10px' }}>📭</div>
             <div style={{ fontSize: '16px' }}>Nenhuma requisição registada ainda</div>
           </div>
         ) : (
@@ -191,7 +190,6 @@ export default function LogsPage({ history }) {
                         fontWeight: '600',
                         color: log.status === 'success' ? '#34d399' : '#f87171'
                       }}>
-                        {log.status === 'success' ? '✅' : '❌'}
                         {log.status === 'success' ? 'Sucesso' : 'Erro'}
                       </span>
                     </td>
