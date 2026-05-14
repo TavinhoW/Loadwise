@@ -8,7 +8,8 @@ function log(message) {
   console.log(`[${new Date().toISOString()}] [${SERVICE_NAME}] ${message}`);
 }
 
-// Sieve of Eratosthenes — simulates CPU-intensive work
+// Crivo de Eratóstenes — algoritmo clássico para calcular números primos até um limite
+// Usado para simular carga de CPU sem dependências externas
 function computePrimes(limit) {
   const sieve = new Array(limit + 1).fill(true);
   sieve[0] = sieve[1] = false;
@@ -30,11 +31,13 @@ const server = http.createServer((req, res) => {
   const url = new URL(req.url, `http://localhost:${PORT}`);
   log(`${req.method} ${url.pathname}`);
 
+  // Endpoint de healthcheck — usado pelo Docker para verificar se o container está operacional
   if (url.pathname === "/health") {
     sendJson(res, 200, { status: "ok", service: SERVICE_NAME });
     return;
   }
 
+  // Endpoint de stress de CPU — calcula primos até ao limite indicado (padrão: 50 000)
   if (url.pathname === "/cpu") {
     const limit = Math.min(parseInt(url.searchParams.get("limit") || "50000", 10), 200000);
     const count = computePrimes(limit);
@@ -49,6 +52,7 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  // Endpoint lento — introduz um delay artificial para simular latência elevada
   if (url.pathname === "/slow") {
     const delay = Math.min(parseInt(url.searchParams.get("ms") || "500", 10), 3000);
     setTimeout(() => {
@@ -63,6 +67,7 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  // Endpoint padrão — resposta imediata usada pelo dashboard para medir latência normal
   sendJson(res, 200, {
     service: SERVICE_NAME,
     endpoint: "/",
@@ -79,6 +84,7 @@ server.on("error", (err) => {
 
 server.listen(PORT, () => log(`Running on port ${PORT}`));
 
+// Encerramento gracioso — aguarda pedidos em curso antes de terminar o processo
 function shutdown() {
   log("Shutting down...");
   server.close(() => { log("Shutdown complete"); process.exit(0); });

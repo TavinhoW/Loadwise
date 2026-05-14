@@ -1,7 +1,9 @@
+// URL do balanceador de carga — usa o hostname atual para funcionar em qualquer máquina
 const LOAD_BALANCER_URL =
   process.env.REACT_APP_LOAD_BALANCER_URL ||
   `http://${window.location.hostname}:8080`;
 
+// Envia um pedido ao balanceador e mede a latência do ponto de vista do browser
 export async function fetchBackendStatus(endpoint = '/') {
   const start = performance.now();
 
@@ -23,6 +25,7 @@ export async function fetchBackendStatus(endpoint = '/') {
       endpoint,
     };
   } catch (error) {
+    // Em caso de falha, devolve um registo de erro sem interromper o polling
     return {
       message: "Erro na ligação",
       latency: 0,
@@ -35,6 +38,7 @@ export async function fetchBackendStatus(endpoint = '/') {
   }
 }
 
+// Calcula estatísticas agregadas a partir do histórico de pedidos
 export function computeStats(history, totalRequests) {
   if (history.length === 0) {
     return {
@@ -51,11 +55,11 @@ export function computeStats(history, totalRequests) {
   const successful = history.filter(r => r.status === "success");
   const totalLatency = successful.reduce((sum, r) => sum + r.latency, 0);
 
-  // Throughput: requests in last 10 seconds
+  // Débito: número de pedidos nos últimos 10 segundos
   const now = Date.now();
   const recentCount = history.filter(r => r.timestamp > now - 10000).length;
 
-  // P95 latency
+  // P95: latência abaixo da qual se encontram 95% dos pedidos bem-sucedidos
   const sortedLatencies = successful.map(r => r.latency).sort((a, b) => a - b);
   const p95Index = Math.max(0, Math.ceil(sortedLatencies.length * 0.95) - 1);
 

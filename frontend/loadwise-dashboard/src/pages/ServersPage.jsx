@@ -9,9 +9,12 @@ import ServerStatus from '../components/ServerStatus';
 
 export default function ServersPage({ stats, history }) {
   const now = Date.now();
-  const OFFLINE_AFTER_MS = 10000; // 10s sem resposta bem-sucedida → OFFLINE
+  // Se não houve resposta bem-sucedida de um servidor nos últimos 10s, considera-se OFFLINE
+  const OFFLINE_AFTER_MS = 10000;
   const lastServiceASuccess = [...history].reverse().find(h => h.server === 'Service A');
   const lastServiceBSuccess = [...history].reverse().find(h => h.server === 'Service B');
+  // Aguarda pelo menos 5 entradas no histórico antes de avaliar o estado dos servidores
+  // para evitar falsos negativos no arranque da aplicação
   const hasEnoughHistory = history.length >= 5;
   const isServiceAActive = !hasEnoughHistory || (!!lastServiceASuccess && (now - lastServiceASuccess.timestamp) < OFFLINE_AFTER_MS);
   const isServiceBActive = !hasEnoughHistory || (!!lastServiceBSuccess && (now - lastServiceBSuccess.timestamp) < OFFLINE_AFTER_MS);
@@ -169,7 +172,7 @@ export default function ServersPage({ stats, history }) {
                 fontWeight: 'bold',
                 color: isServiceAActive ? '#10b981' : '#ef4444'
               }}>
-                {isServiceAActive ? '🟢 Online' : '🔴 Offline'}
+                {isServiceAActive ? 'Online' : 'Offline'}
               </span>
             </div>
           </div>
@@ -271,7 +274,7 @@ export default function ServersPage({ stats, history }) {
                 fontWeight: 'bold',
                 color: isServiceBActive ? '#10b981' : '#ef4444'
               }}>
-                {isServiceBActive ? '🟢 Online' : '🔴 Offline'}
+                {isServiceBActive ? 'Online' : 'Offline'}
               </span>
             </div>
           </div>
