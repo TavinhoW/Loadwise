@@ -12,13 +12,15 @@ const SERVERS = [
 // Deve ser superior ao delay do endpoint /slow (500ms) para evitar falsos timeouts
 const CONNECT_TIMEOUT_MS = 10000;
 
+// Backoff exponencial: tempo base de indisponibilidade após primeira falha
+const BASE_FAIL_TIMEOUT_MS = 15000;
+// Tempo máximo de indisponibilidade (5 minutos) — evita retries eternamente raros
+const MAX_FAIL_TIMEOUT_MS = 300000;
+
 // Índice do próximo servidor a receber um pedido (algoritmo round-robin)
 let index = 0;
 const failures = new Array(SERVERS.length).fill(0);
 const unavailableUntil = new Array(SERVERS.length).fill(0);
-
-// Após uma falha, o servidor fica bloqueado durante este período antes de ser tentado novamente
-const FAIL_TIMEOUT_MS = 15000;
 
 // Seleciona o próximo servidor disponível em round-robin
 // Ignora servidores marcados como indisponíveis até o seu tempo de bloqueio expirar
@@ -37,15 +39,20 @@ function getNextServer() {
   return idx;
 }
 
-// Regista uma falha e bloqueia o servidor temporariamente (failover automático)
+// Regista uma falha com backoff exponencial:
+// cada falha consecutiva duplica o tempo de bloqueio até ao máximo definido
 function markFailure(idx) {
   failures[idx]++;
-  unavailableUntil[idx] = Date.now() + FAIL_TIMEOUT_MS;
-  console.log(`[balancer] ${SERVERS[idx].name} marcado como indisponível por ${FAIL_TIMEOUT_MS / 1000}s`);
+  const timeout = Math.min(BASE_FAIL_TIMEOUT_MS * Math.pow(2, failures[idx] - 1), MAX_FAIL_TIMEOUT_MS);
+  unavailableUntil[idx] = Date.now() + timeout;
+  console.log(`[balancer] ${SERVERS[idx].name} indisponível — falha #${failures[idx]}, próxima tentativa em ${Math.round(timeout / 1000)}s`);
 }
 
 // Repõe o estado do servidor após uma resposta bem-sucedida
 function markSuccess(idx) {
+  if (failures[idx] > 0) {
+    console.log(`[balancer] ${SERVERS[idx].name} recuperado após ${failures[idx]} falha(s)`);
+  }
   failures[idx] = 0;
   unavailableUntil[idx] = 0;
 }
